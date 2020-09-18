@@ -48,8 +48,10 @@ public class A1 {
 		String result = "";
 		String tmp; 
 		for(String h : head) {
-			String tmpSpecial = special(h);
-			h = h.replaceAll(tmpSpecial,"");
+			char tmpSpecial = special(h);
+			String strSpecial = Character.toString(special(h));
+			System.out.println(tmpSpecial);
+			h = h.replaceAll(strSpecial,"");
 			//System.out.println(h);
 
 			for(String t : tail) {
@@ -59,7 +61,6 @@ public class A1 {
 						if(h.charAt(i) == t.charAt(i)){
 							//System.out.println(tmpSpecial);
 							h = t +  tmpSpecial +  " ";
-							System.out.println(h);
 							//tmpSpecial = "";
 							continue;
 						}
@@ -69,17 +70,16 @@ public class A1 {
 		}
 		//return result;
 	}
-	public static String special (String string) {
-		if(string.contains(",")) {
-			return ",";
+	public static char special (String string) {
+		String special = ",.!-_:;";
+		for(int i=0; i<string.length(); i++) {
+			for(int k=0; k<special.length(); k++) {
+				char ch = special.charAt(k);
+				if(string.charAt(i) == ch) {
+					return ch;
+				}
+			}
 		}
-		if(string.contains(".")) {
-			return ".";
-		}
-		if(string.contains("!")) {
-			return "!";
-		}
-		return "";
 	}
 }
 
