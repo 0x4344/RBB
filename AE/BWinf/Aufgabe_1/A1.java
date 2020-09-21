@@ -1,52 +1,95 @@
 import java.io.File;
 import java.io.FileNotFoundException;  
-import java.util.Scanner;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.*;
+                
 
 public class A1 {
+
 	public static void main (String[] args) {
 
-	// read textfile and setup arraylist
-	ArrayList<String> data = new ArrayList<String>();
-	ArrayList<String> tmp = new ArrayList<String>();
-	String head = "";
-	String tail = "";
-	try {
-    	File myObj = new File("r0.txt");
-      	Scanner myReader = new Scanner(myObj);
-		int i = 0;
-      	while (myReader.hasNextLine()) {
-			if (i == 0) {
-				head += myReader.nextLine();
-				i++;
-			}
-			else tail += myReader.nextLine();
+        // load file
+        ArrayList<String> data = new ArrayList<String>();
+        data = loadFile("r0.txt");
+       
+        // substring arraylist
+        String h = data.get(0); 
+        String t = data.get(1);
+
+        // remove special chars
+        h = rmSpecialChars(h);
+        t = rmSpecialChars(t);
+
+        // convert string to string array
+        String[] head = h.split(" ");
+        String[] tail = t.split(" ");
+        Arrays.sort(head, Comparator.comparingInt(String::length));
+        Arrays.sort(tail, Comparator.comparingInt(String::length));
+
+        Set result = new HashSet();
+
+        //for(String s:tail) System.out.println(s);
+        for(String a:head) {
+            for(String b:tail) {
+                if(a.length() == b.length()) {
+                    for(int i=0; i<b.length(); i++) {
+                        if(a.charAt(i) == b.charAt(i)) {
+                            result.add(b);
+                        }
+                    }
+                } 
+            }
         }
-      	myReader.close();
-	} catch (FileNotFoundException e) {
-     	System.out.println("An error occurred.");
-      	e.printStackTrace();
-    }
+        System.out.println(result);
+       /*
+        for(String hs : head) {
+            for(String ts : tail) {
+                if(hs.length() == ts.length()) {
+                    tmp = ts;
+                    for(int i=0; i<hs.length(); i++) {
+                        if(hs.charAt(i) == ts.charAt(i)) {
+                            tmp = ts;
+                            tail = tail.remove(ts);
+                        }
+                    }
+                }
+            }
+        }
+        */
+        //for(String bla : head)
+        //System.out.println(bla);
 
-	String[] splitHead = splitSentence(head);
-	String[] splitTail = splitSentence(tail);
-	//String r = solve(splitHead,splitTail);
+        /*
+        for (int i=0;i<head.length;i++) {
+            for(int k=0;k<tail.length;k++) {
+                if(head[i].length() == tail[k].length()) {
+                    tmp = tail[k];
+                    if(head[i].charAt(k) == tail[k].charAt(k)) tmp = tail[k];
+                }
+            }   
+        }   
+        */
 
-	solve(splitHead, splitTail);
-	for(String k : splitHead)
-		System.out.println(k);
+        /* 
+        for(String s: head)
+            System.out.println(s);
 
+        for(String s : head) System.out.println(s ); 
+        System.out.println(tail); 
+        for(int i=0; i<dataString.length(); i++) {
+                System.out.print(dataString.charAt(i) +"  ");
+        }
+        */
+        
 	}
 
 	public static String[] splitSentence(String string) {
 		return string.split(" ");
 	}
+    
 	public static void solve(String[] head, String[] tail) {
 		String result = "";
-		String tmp; 
+		String tmp = "";
+
 		for(String h : head) {
 			char tmpSpecial = special(h);
 			String strSpecial = Character.toString(special(h));
@@ -70,7 +113,9 @@ public class A1 {
 		}
 		//return result;
 	}
+
 	public static char special (String string) {
+        String pattern = "[^A-Za-z0-9]";
 		String special = ",.!-_:;";
 		for(int i=0; i<string.length(); i++) {
 			for(int k=0; k<special.length(); k++) {
@@ -80,7 +125,29 @@ public class A1 {
 				}
 			}
 		}
+        return ' ';
 	}
+
+  public static ArrayList<String> loadFile(String pathg) {
+    // read textfile and setup arraylist
+    ArrayList<String> data = new ArrayList<String>();
+    try {
+        File myObj = new File(pathg);
+        Scanner myReader = new Scanner(myObj);
+        while (myReader.hasNextLine()) {
+            data.add(myReader.nextLine());
+        }
+    myReader.close();
+    } catch (FileNotFoundException e) {
+        System.out.println("An error occurred.");
+        e.printStackTrace();
+        }
+    return data;
+    }
+
+   public static String rmSpecialChars(String s) {
+      return s.replaceAll("[^A-Za-z0-9äÄöÖüÜß_\\s]+",""); 
+    }    
 }
 
 
