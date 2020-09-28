@@ -1,7 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;  
 import java.util.*;
-                
 
 public class A1 {
 
@@ -25,21 +24,8 @@ public class A1 {
         Arrays.sort(head, Comparator.comparingInt(String::length));
         Arrays.sort(tail, Comparator.comparingInt(String::length));
 
-        Set result = new HashSet();
 
-        //for(String s:tail) System.out.println(s);
-        for(String a:head) {
-            for(String b:tail) {
-                if(a.length() == b.length()) {
-                    for(int i=0; i<b.length(); i++) {
-                        if(a.charAt(i) == b.charAt(i)) {
-                            result.add(b);
-                        }
-                    }
-                } 
-            }
-        }
-        System.out.println(result);
+        for(String s:tail) System.out.println(s);
        /*
         for(String hs : head) {
             for(String ts : tail) {
